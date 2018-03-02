@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+require 'sensu-handler'
+
+class NoFilter < Sensu::Handler
+  def filter; end
+
+  def handle
+    puts 'Event: ' + @event.inspect
+  end
+end

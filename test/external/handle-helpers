@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require 'sensu-handler'
+
+class Helpers < Sensu::Handler
+  def handle
+    puts event_summary
+  end
+
+  def api_request(*_args)
+    nil
+  end
+
+  def stash_exists?(*_args)
+    nil
+  end
+
+  def event_exists?(*_args)
+    true
+  end
+end
