@@ -25,7 +25,7 @@
 #   Released under the same terms as Sensu (the MIT license)
 #   see LICENSE for details
 
-require 'sensu-plugin/check/cli'
+require 'sensu-plugin/metric/cli'
 require 'rpi_gpio'
 
 # Starting check class
