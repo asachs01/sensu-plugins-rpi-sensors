@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 #
-# check-temp-sensor.rb
+#  metrics-temp-sensors.rb
 #
 # DESCRIPTION:
-#   Checks temperature provided by sensor attached to Raspberry Pi
+#   Provides temperature metrics from sensor attached to Raspberry Pi
 #
 # OUTPUT:
-#   plain text
+#   metric data
 #
 # PLATFORMS:
 #   Linux
@@ -16,11 +16,12 @@
 #   gem: rpi_gpio
 #
 # USAGE:
-#   check-temp-sensor.rb -F -w 50 -c 70
+#   metrics-temp-sensors.rb -F 
 #
 # NOTES:
 #
 # LICENSE:
+#   Aaron Sachs aaronm.sachs@gmail.com
 #   Released under the same terms as Sensu (the MIT license)
 #   see LICENSE for details
 
@@ -28,7 +29,7 @@ require 'sensu-plugin/check/cli'
 require 'rpi_gpio'
 
 # Starting check class
-class CheckTempSensor < Sensu::Plugin::Metric::CLI::Graphite
+class TempSensorMetrics < Sensu::Plugin::Metric::CLI::Graphite
   option  :fahrenheit,
           short: '-F',
           long: '--fahrenheit',
@@ -38,6 +39,12 @@ class CheckTempSensor < Sensu::Plugin::Metric::CLI::Graphite
           short: '-C',
           long: '--celsius',
           description: 'Return temperature in Celsius'
+
+  option :scheme,
+          description: 'Metric naming scheme',
+          short: '-s SCHEME',
+          long: '--scheme SCHEME',
+          default: "#{Socket.gethostname}.temp"
 
   # Set up variables
   def initialize
@@ -67,22 +74,10 @@ class CheckTempSensor < Sensu::Plugin::Metric::CLI::Graphite
   end
 
   def run
-    tempstr = 'Current Temp: '
-    celstemp = tempstr + read_temp.round(2).to_s
-    fahrtemp = tempstr + temp_to_fahrenheit.round(2).to_s
-
-    if config[:celsius] && read_temp > config[:tcrit]
-      critical celstemp
-    elsif config[:celsius] && read_temp.between?(config[:tcrit], config[:twarn])
-      warning celstemp
-    elsif config[:celsius] && read_temp < config[:twarn]
-      ok celstemp
-    elsif config[:fahrenheit] && temp_to_fahrenheit > config[:tcrit]
-      critical critmsg fahrtemp
-    elsif config[:fahrenheit] && temp_to_fahrenheit.between?(config[:tcrit], config[:twarn])
-      warning fahrtemp
+    if config[:celsius]
+      output
     else
-      ok fahrtemp
+      output
     end
   end
 end
