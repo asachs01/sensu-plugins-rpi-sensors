@@ -80,7 +80,7 @@ class TempSensorMetrics < Sensu::Plugin::Metric::CLI::Graphite
     if config[:celsius]
       ok output "#{config[:scheme]}", read_temp
     else
-      ok output "#{config[:scheme]}", temp_to_fahrenheit
+      ok output "#{config[:scheme]}", temp_to_fahrenheit.round(2)
     end
   end
 end
