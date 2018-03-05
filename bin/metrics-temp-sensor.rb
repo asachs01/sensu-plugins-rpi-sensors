@@ -27,6 +27,7 @@
 
 require 'sensu-plugin/metric/cli'
 require 'rpi_gpio'
+require 'socket'
 
 # Starting check class
 class TempSensorMetrics < Sensu::Plugin::Metric::CLI::Graphite
