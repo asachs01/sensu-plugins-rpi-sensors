@@ -77,9 +77,9 @@ class TempSensorMetrics < Sensu::Plugin::Metric::CLI::Graphite
     timestamp = Time.now.to_i
 
     if config[:celsius]
-      output "#{config[:scheme]}", read_temp, timestamp
+      output "#{config[:scheme]}", read_temp
     else
-      output "#{config[:scheme]}", temp_to_fahrenheit, timestamp
+      output "#{config[:scheme]}", temp_to_fahrenheit
     end
   end
 end
